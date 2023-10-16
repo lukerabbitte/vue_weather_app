@@ -1,20 +1,18 @@
 :root {
   --color-background: #f6f0f0;
-
-  --color-header: #a7c3bc;
-
-  --color-heading: #233430;
+  --color-header: #cfbc85;
+  --color-heading: #28413b;
   --color-text: #00100b;
+  --color-text-hover: #28413b;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: #171717;
-
-    --color-header: #314b45;
-
+    --color-header: #4d4632;
     --color-heading: #89c8b8;
     --color-text: #eafffa;
+    --color-text-hover: #89c8b8;
   }
 }
 
@@ -28,11 +26,12 @@
 
 body {
   min-height: 100vh;
+  padding: 1rem;
   color: var(--color-text);
   background: var(--color-background);
   line-height: 1.6;
   box-sizing: border-box;
-  margin: 0;
+  margin: 0 auto;
   font-weight: normal;
   font-family:
     Inter,
@@ -48,7 +47,4 @@ body {
     'Helvetica Neue',
     sans-serif;
   font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }

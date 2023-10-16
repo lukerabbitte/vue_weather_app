@@ -2,7 +2,6 @@
 
 import { ref } from 'vue';
 import { useLangStore } from '@/stores/lang'
-
 const lang = useLangStore()
 
 </script>
@@ -17,18 +16,17 @@ const lang = useLangStore()
     </nav>
 </template>
 
-<style>
-
+<style scoped>
     .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px;
-    background-color: var(--color-header);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: var(--color-header);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
     }
 
     .i18n-button {
@@ -48,5 +46,4 @@ const lang = useLangStore()
         outline: none;
         color: #f0f0f0;
     }
-
 </style>
