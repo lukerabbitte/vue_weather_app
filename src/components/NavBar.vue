@@ -1,12 +1,9 @@
 <script setup>
 
 import { ref } from 'vue';
+import { useLangStore } from '@/stores/lang'
 
-const currentLanguage = ref('EN');
-
-const toggleLanguage = () => {
-  currentLanguage.value = currentLanguage.value === 'EN' ? 'FR' : 'EN';
-};
+const lang = useLangStore()
 
 </script>
 
@@ -15,7 +12,7 @@ const toggleLanguage = () => {
         <h1>Weather App</h1>
         <div class="i18n-button">
             <span role="img" aria-label="Earth Emoji" style="font-size: 25px;">🌍</span>
-            <button class="toggle-button" @click="toggleLanguage">{{ currentLanguage }}</button>
+            <button class="toggle-button" @click="lang.toggle">{{ lang.current }}</button>
         </div>
     </nav>
 </template>
@@ -27,7 +24,7 @@ const toggleLanguage = () => {
     align-items: center;
     justify-content: space-between;
     padding: 15px;
-    background-color: #1f2b28;
+    background-color: var(--color-header);
     position: fixed;
     width: 100%;
     top: 0;
