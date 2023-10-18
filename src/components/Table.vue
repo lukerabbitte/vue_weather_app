@@ -3,9 +3,8 @@
     import { useLangStore } from '@/stores/lang'
 
     const lang = useLangStore()
-
-    const dummyCity='Warsaw'
-    const countryCode='PL';
+    
+    defineProps({cityName: String});  // TODO turn cityName into state, rather than this prop passing. Doesn't seem to work.
     const limit = 1;
     
     const latitude = ref(null);
@@ -13,8 +12,10 @@
 
     const fetchGeocodingData = async () => {
         try {
-            const response = await fetch(`http://localhost:8080/geocoding?cityName=${dummyCity}&countryCode=${countryCode}&limit=${limit}`);
+            console.log('City: ', cityName);
+            const response = await fetch(`http://localhost:8080/geocoding?cityName=${cityName}&limit=${limit}`);
             const data = await response.json();
+            console.log(data);
 
             if (Array.isArray(data) && data.length > 0) {
                 latitude.value = data[0].lat;
@@ -34,5 +35,5 @@
 </script>
 
 <template>
-    <p>Hello, the city's latitude is {{ latitude }}, and the city's longitude is {{ longitude }}.</p>
+    <p>The latitude for {{ cityName }} is {{ latitude }}, and longitude is {{ longitude }}.</p>
 </template>

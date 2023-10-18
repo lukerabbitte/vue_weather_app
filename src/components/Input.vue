@@ -2,27 +2,23 @@
     import { ref } from 'vue';
     import { useLangStore } from '@/stores/lang'
 
-    const lang = useLangStore()
-    const cityName = ref('');   // TODO move this state to App.vue as it is needed in Table!
-    
-    const handleCity = () => {
-        console.log('Submitted city name:', cityName.value);
-    };
+    const lang = useLangStore();
+    const cityName = ref('');
 
 </script>
 
 <template>
-    <div class="input-container">
+  <form @submit.prevent="$emit('changeCityName', cityName)" class="input-container">
     <input
       type="text"
       id="cityInput"
       v-model="cityName"
       :placeholder="lang.current === 'EN' ? 'City name (e.g. Warsaw)' : 'Nom de ville (p. ex. Varsovie)'"
     />
-    <button @click="handleCity">
+    <button type="submit">
       {{lang.current === 'EN' ? 'Search' : 'Rechercher'}}
     </button>
-  </div>
+  </form>
 </template>
 
 <style scoped>
