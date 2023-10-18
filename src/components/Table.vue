@@ -4,7 +4,7 @@
 
     const lang = useLangStore()
     
-    const props = defineProps({cityName: String});  // TODO turn cityName into state, rather than this prop passing. Doesn't seem to work.
+    const props = defineProps({cityName: String});  // TODO figure out how to store this as local variable.
 
     const limit = 1;
     
@@ -13,8 +13,7 @@
 
     const fetchGeocodingData = async () => {
         try {
-            console.log('City: ', cityName);
-            const response = await fetch(`http://localhost:8080/geocoding?cityName=${cityName}&limit=${limit}`);
+            const response = await fetch(`http://localhost:8080/geocoding?cityName=${cityName}&limit=${limit}`); // Error, cityName not defined.
             const data = await response.json();
             console.log(data);
 
