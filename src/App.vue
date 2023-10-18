@@ -12,7 +12,4 @@
   <Input />
   <Table />
   
-  <ul>
-  </ul>
-  
 </template>

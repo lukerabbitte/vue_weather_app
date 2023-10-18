@@ -3,6 +3,7 @@
     import { ref, watch } from 'vue';
     import { useCityStore } from '@/stores/city'
     import { useLangStore } from '@/stores/lang'
+    import Pollution from './Pollution.vue';
 
     const city = useCityStore();
     const lang = useLangStore();
@@ -30,12 +31,8 @@
 
     const fetchWeatherData = async () => {
         try {
-            console.log("lat before fetch is " + latitude.value);
-            console.log("lon before fetch is " + longitude.value);
-            console.log("lang before fetch is " + lang.current);
             const response = await fetch(`http://localhost:8080/weather?lat=${latitude.value}&lon=${longitude.value}&lang=${lang.current}`);
             const data = await response.json();
-            console.log("Data after fetch is " + data);
 
             if (response.ok) {
                 generateLiElements(data);
@@ -46,12 +43,7 @@
             console.error('Error fetching weather data:', error);
         }
     };
-
-    // Ensure API calls resolve in sensible order
-    const fetchGeocodingAndWeatherData = async () => {
-        await fetchGeocodingData(); // Gets the coordinates
-        await fetchWeatherData();   // Gets the weather data
-    };
+   
     
     // Helper function to interact with DOM
     function generateLiElements(jsonData) {
@@ -71,18 +63,25 @@
         fetchGeocodingAndWeatherData();
     });
 
+    // Ensure API calls resolve in sensible order
+    const fetchGeocodingAndWeatherData = async () => {
+        await fetchGeocodingData(); // Gets the coordinates
+        await fetchWeatherData();   // Gets the weather data
+    };
 
 </script>
 
 
 <template>
-    <h1>The city has been passed to Test.vue as {{ city.name }}.</h1>
-    <p>Latitude: {{ latitude }}</p>
-    <p>Longitude: {{ longitude }}</p>
+    <div>
+        <h1>The city has been passed to Table.vue as {{ city.name }}.</h1>
+        <p>Latitude: {{ latitude }}</p>
+        <p>Longitude: {{ longitude }}</p>
 
-    <ul id="dataList">
-        <li>
-            Sample list item
-        </li>
-    </ul>
+        <ul id="dataList">
+            <!-- Display fetched weather data -->
+        </ul>
+
+        <Pollution :lat = "latitude" :lon = "longitude" />
+    </div>
 </template>
