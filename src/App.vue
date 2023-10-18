@@ -2,7 +2,7 @@
 
   import NavBar from './components/NavBar.vue';
   import Input from './components/Input.vue';
-  import Test from './components/Test.vue';
+  import Table from './components/Table.vue';
   
 </script>
 
@@ -10,7 +10,7 @@
 
   <NavBar />
   <Input />
-  <Test />
+  <Table />
   
   <ul>
   </ul>
