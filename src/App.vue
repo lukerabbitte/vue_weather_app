@@ -1,25 +1,16 @@
 <script setup>
 
-  import { ref } from 'vue';
-  import NavBar from './components/NavBar.vue'
-  import Input from './components/Input.vue'
-  import Table from './components/Table.vue'
-
-  const cityName = ref('');
+  import NavBar from './components/NavBar.vue';
+  import Input from './components/Input.vue';
+  import Test from './components/Test.vue';
   
 </script>
 
 <template>
 
   <NavBar />
-  <Input @change-city-name="
-        (data) => {
-          cityName = data;
-        }
-      " />
-
-  <Table :city-name=cityName />
-
+  <Input />
+  <Test />
   
   <ul>
   </ul>

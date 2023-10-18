@@ -1,24 +1,27 @@
 <script setup>
     import { ref } from 'vue';
     import { useLangStore } from '@/stores/lang'
+    import { useCityStore } from '@/stores/city'
 
     const lang = useLangStore();
+    const city = useCityStore();
+
     const cityName = ref('');
 
 </script>
 
 <template>
-  <form @submit.prevent="$emit('changeCityName', cityName)" class="input-container">
+
+  <form @submit.prevent="city.changeCityName(cityName)" class="input-container">
     <input
-      type="text"
-      id="cityInput"
       v-model="cityName"
-      :placeholder="lang.current === 'EN' ? 'City name (e.g. Warsaw)' : 'Nom de ville (p. ex. Varsovie)'"
-    />
-    <button type="submit">
+      :placeholder="lang.current === 'EN' ? 'City name (e.g. Warsaw)' : 'Nom de ville (p. ex. Varsovie)'">
+
+    <button type="submit" >
       {{lang.current === 'EN' ? 'Search' : 'Rechercher'}}
     </button>
   </form>
+
 </template>
 
 <style scoped>

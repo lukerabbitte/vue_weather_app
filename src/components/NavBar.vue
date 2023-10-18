@@ -1,8 +1,7 @@
 <script setup>
 
-import { ref } from 'vue';
-import { useLangStore } from '@/stores/lang'
-const lang = useLangStore()
+    import { useLangStore } from '@/stores/lang'
+    const lang = useLangStore()
 
 </script>
 
