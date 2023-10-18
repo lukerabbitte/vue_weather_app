@@ -4,8 +4,7 @@
 
     const lang = useLangStore()
     
-    const props = defineProps({cityName: String});
-    const city = ref(props.cityName);
+    const props = defineProps({cityName: String});  // TODO turn cityName into state, rather than this prop passing. Doesn't seem to work.
 
     const limit = 1;
     
@@ -14,8 +13,8 @@
 
     const fetchGeocodingData = async () => {
         try {
-            console.log('City: ', city.value);
-            const response = await fetch(`http://localhost:8080/geocoding?cityName=${city.value}&limit=${limit}`);
+            console.log('City: ', cityName);
+            const response = await fetch(`http://localhost:8080/geocoding?cityName=${cityName}&limit=${limit}`);
             const data = await response.json();
             console.log(data);
 
@@ -37,5 +36,5 @@
 </script>
 
 <template>
-    <p>The latitude for {{ city }} is {{ latitude }}, and longitude is {{ longitude }}.</p>
+    <p>The latitude for {{ cityName }} is {{ latitude }}, and longitude is {{ longitude }}.</p>
 </template>
