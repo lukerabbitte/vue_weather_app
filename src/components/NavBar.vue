@@ -24,7 +24,7 @@
         padding: 15px;
         background-color: var(--color-header);
         position: fixed;
-        height: 70px;
+        height: var(--nav-bar-height);
         width: 100%;
         top: 0;
         left: 0;

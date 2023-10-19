@@ -9,8 +9,10 @@
     const limit = 1;
     const latitude = ref(null);
     const longitude = ref(null);
-    const maskMessage = ref('');
+    
     const rainMessage = ref('');
+    const temperatureMessage = ref('');
+    const maskMessage = ref('');
 
     // Geocoding call
     const fetchGeocodingData = async () => {
