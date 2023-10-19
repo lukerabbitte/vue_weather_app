@@ -23,6 +23,7 @@
         padding: 15px;
         background-color: var(--color-header);
         position: fixed;
+        height: 70px;
         width: 100%;
         top: 0;
         left: 0;

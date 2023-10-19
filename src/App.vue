@@ -8,8 +8,20 @@
 
 <template>
 
+<header>
   <NavBar />
+</header>  
+
+<body>
   <Input />
   <Table />
-  
+</body>
+
 </template>
+
+<style>
+  body {
+    margin-top: 35px;
+  }
+
+</style>

@@ -26,7 +26,6 @@
 
 <style scoped>
   .input-container {
-    margin: 70px 0 30px 0;
     display: flex;
     flex-direction: row;
     align-items: center;

@@ -81,7 +81,8 @@
         <ul id="dataList">
             <!-- Display fetched weather data -->
         </ul>
-
-        <Pollution :lat = "latitude" :lon = "longitude" />
+        <div v-if="latitude && longitude">
+            <Pollution :lat = "latitude" :lon = "longitude" />
+        </div>
     </div>
 </template>
