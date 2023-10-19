@@ -1,10 +1,12 @@
 <script setup>
 
-  import { onMounted } from 'vue';
   import NavBar from './components/NavBar.vue';
   import Input from './components/Input.vue';
   import Table from './components/Table.vue';
-  
+  import { useCityStore } from '@/stores/city';
+
+  const city = useCityStore();
+
 </script>
 
 <template>

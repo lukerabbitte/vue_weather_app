@@ -172,8 +172,6 @@
     <div>
         <div>
             <h2 v-if="city.name">5-day weather for {{ city.name }}:</h2>
-            <p>Latitude: {{ latitude }}</p>
-            <p>Longitude: {{ longitude }}</p>
 
             <ul id="dataList">
                 <!-- Display fetched weather data -->
