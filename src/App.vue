@@ -4,14 +4,6 @@
   import NavBar from './components/NavBar.vue';
   import Input from './components/Input.vue';
   import Table from './components/Table.vue';
-
-  const scrollToTop = () => {
-    window.scrollTo(0, 0);
-  };
-
-  onMounted(() => {
-    scrollToTop();
-  });
   
 </script>
 
@@ -21,9 +13,38 @@
       <NavBar />
     </header>
 
+
     <main>
-      <Input />
-      <Table />
+      <div class="container">
+        <div class="input-container">
+          <Input />
+        </div>
+        <div class="table-container">
+          <Table />
+        </div>
+      </div>
     </main>
   </div>
 </template>
+
+<style scoped>
+
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .input-container {
+    background-color: var(--color-card);
+    border-radius: 8px;
+    padding: 1px 16px 16px 16px;
+    margin-top: var(--nav-bar-height);
+    margin-bottom: 20px;
+  }
+
+  .table-container {
+    background-color: var(--color-card-2);
+    border-radius: 8px;
+    padding: 16px;
+  }
+</style>

@@ -1,6 +1,8 @@
 :root {
   --color-background: #f6f0f0;
   --color-header: #cfbc85;
+  --color-card: #89c8b8;
+  --color-card-2: #d080a9;
   --color-heading: #28413b;
   --color-text: #00100b;
   --color-text-hover: #28413b;
@@ -12,6 +14,8 @@
   :root {
     --color-background: #171717;
     --color-header: #4d4632;
+    --color-card: #28413b;
+    --color-card-2: #482c3b;
     --color-heading: #89c8b8;
     --color-text: #eafffa;
     --color-text-hover: #89c8b8;
