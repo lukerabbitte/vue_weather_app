@@ -18,6 +18,7 @@
 <style scoped>
     .navbar {
         display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: space-between;
         padding: 15px;
@@ -27,17 +28,19 @@
         width: 100%;
         top: 0;
         left: 0;
+        right: 0;
     }
 
     .i18n-button {
         display: flex;
         align-items: center;
+        margin-right: 25px;
     }
 
     .toggle-button {
         border: none;
         background: none;
-        color: #A1A5A4;
+        color: var(--color-text);
         cursor: pointer;
         font-size: 16px;
     }

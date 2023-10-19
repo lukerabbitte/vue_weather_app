@@ -18,10 +18,3 @@
 </body>
 
 </template>
-
-<style>
-  body {
-    margin-top: 35px;
-  }
-
-</style>

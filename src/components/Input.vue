@@ -12,10 +12,15 @@
 
 <template>
 
+  <div>
+    <h2>Discover upcoming weather events in any city</h2>
+    <p>Hint: make a more specific search by putting the 2-letter country code after the city name! E.g. 'Dublin, IE'</p>
+  </div>
+
   <form @submit.prevent="city.changeCityName(cityName)" class="input-container">
     <input
       v-model="cityName"
-      :placeholder="lang.current === 'EN' ? 'City name (e.g. Warsaw)' : 'Nom de ville (p. ex. Varsovie)'">
+      :placeholder="lang.current === 'EN' ? 'City name (e.g. Warsaw)' : 'Ville (p. ex. Varsovie)'">
 
     <button type="submit" >
       {{lang.current === 'EN' ? 'Search' : 'Rechercher'}}
@@ -33,7 +38,7 @@
   }
 
   #cityInput {
-    width: 28ch;
+    width: 30ch;
     font-size: 1.1rem;
   }
 

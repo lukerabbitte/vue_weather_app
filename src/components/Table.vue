@@ -10,6 +10,7 @@
     const latitude = ref(null);
     const longitude = ref(null);
     const maskMessage = ref('');
+    const rainMessage = ref('');
 
     // Geocoding call
     const fetchGeocodingData = async () => {
@@ -93,8 +94,15 @@
 
         dateReports.forEach((report, date) => {
             const li = document.createElement('li');
-            li.textContent = `Date: ${date}, Temperature (min-max): ${report.minTemp}°C - ${report.maxTemp}°C, Wind Speed (min-max): ${report.minWindSpeed} m/s - ${report.maxWindSpeed} m/s, Total Rainfall: ${report.totalRainfall} mm`;
+            const totalRainfallFormatted = report.totalRainfall.toFixed(2); // round rainfall report to 2 decimal places
+
+            li.textContent = `${date}: Temperature (min-max): ${report.minTemp}°C - ${report.maxTemp}°C, Wind Speed (min-max): ${report.minWindSpeed}m/s - ${report.maxWindSpeed}m/s, Total Rainfall: ${totalRainfallFormatted}mm`;
             dataList.appendChild(li);
+
+            // Check if any of the days exceeded 2.5mm rainfall, which we take to constitute a rainy day.
+            if (report.totalRainfall > 2.5) {
+                rainMessage.value = "High rainfall detected. Consider bringing an umbrella!";
+            }
         });
     }
 
@@ -125,7 +133,6 @@
                 li.textContent = `The highest pm2_5 on ${date} is ${pm2_5}`;
                 dateList.appendChild(li);
             });
-
             maskMessage.value = 'High pm2_5 levels in the atmosphere. Consider bringing a mask!';
         } else {
             maskMessage.value = 'Low pm2_5 levels in the atmosphere. No need to bring a mask.';
@@ -162,13 +169,14 @@
 <template>
     <div>
         <div>
-            <h1 v-if="city.name">Weather information for {{ city.name }}</h1>
+            <h2 v-if="city.name">5-day weather for {{ city.name }}:</h2>
             <p>Latitude: {{ latitude }}</p>
             <p>Longitude: {{ longitude }}</p>
 
             <ul id="dataList">
                 <!-- Display fetched weather data -->
             </ul>
+            <p> {{ rainMessage }}</p>
         </div>
         <div>
             <h1 v-if="lat && lon">Pollution information for lat {{ lat }} and longitude {{ lon }}</h1>

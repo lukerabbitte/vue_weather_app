@@ -1,3 +1,5 @@
+/* No longer being imported in main.js */
+
 :root {
   --color-background: #f6f0f0;
   --color-header: #cfbc85;
@@ -16,22 +18,13 @@
   }
 }
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
-}
-
 body {
   min-height: 100vh;
-  padding: 1rem;
+  padding: 0.5rem;
   color: var(--color-text);
   background: var(--color-background);
   line-height: 1.6;
-  box-sizing: border-box;
-  margin: 0 auto;
+  margin: 40px auto;
   font-weight: normal;
   font-family:
     Inter,
