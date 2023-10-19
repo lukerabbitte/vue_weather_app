@@ -6,8 +6,6 @@
     defineProps(['lat', 'lon']);
     const maskMessage = ref('');
 
-
-
     const fetchPollutionData = async () => {
         try {
             const response = await fetch(`http://localhost:8080/air_pollution?lat=${latitude.value}&lon=${longitude.value}`);
