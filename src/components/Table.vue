@@ -318,27 +318,31 @@
             </table>
         </div>
 
-        <div class="weather-alerts">
-            <p> {{ rainMessage }}</p>
-            <p> {{ temperatureMessage }}</p>
-            <h1 v-if="lat && lon">Pollution information for lat {{ lat }} and longitude {{ lon }}</h1>
-            <p> {{ maskMessage }}</p>
-        </div>
-        
-        <div class="table" id="pollution-table">
-            <h4 v-if="city.name" class="tableLabel">PM2.5 breakdown for {{ city.name }}:</h4>
-            <table id="pollutionDataTable">
-                <thead>
-                    <!-- Table header will go here -->
-                </thead>
-                <tbody>
-                    <!-- Table rows will go here -->
-                </tbody>
-            </table>
-        </div>
+        <div class = alertsAndPicture>
+            <div class="alerts">
+                <div class="weather-alerts">
+                <p> {{ rainMessage }}</p>
+                <p> {{ temperatureMessage }}</p>
+                <h1 v-if="lat && lon">Pollution information for lat {{ lat }} and longitude {{ lon }}</h1>
+                <p> {{ maskMessage }}</p>
+                </div>
+            
+                <div class="table" id="pollution-table">
+                    <h4 v-if="city.name" class="tableLabel">PM2.5 breakdown for {{ city.name }}:</h4>
+                    <table id="pollutionDataTable">
+                        <thead>
+                            <!-- Table header will go here -->
+                        </thead>
+                        <tbody>
+                            <!-- Table rows will go here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-        <div class="unsplash-image">
-            <UnsplashImage />
+            <div class="unsplash-image">
+                <UnsplashImage />
+            </div>
         </div>
     </div>
 </template>
@@ -375,5 +379,10 @@
 
     .table tbody tr:hover {
     background-color: var(--color-table-hover);
+    }
+
+    .alertsAndPicture {
+        display: flex;
+        justify-content: space-between;
     }
 </style>

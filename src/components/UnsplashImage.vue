@@ -43,15 +43,13 @@
 
 <style scoped>
   .unsplash-grid {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
     background-color: var(--color-card-3);
     border-radius: 8px;
     padding: 10px;
-    justify-content: space-evenly;
+    margin: 15px 50px 0 50px;
+
   }
   .unsplash-photo {
-    width: 30%;
+    width: 100%;
   }
 </style>
