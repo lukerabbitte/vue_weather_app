@@ -15,23 +15,21 @@
   --nav-bar-height: 50px; /*Avoids hiding of body content under fixed navbar*/
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #171717;
-    --color-header: #4d4632;
-    --color-card: #28413b;
-    --color-card-2: #321e29;
-    --color-card-3: #7ca8ff;
-    --color-heading: #89c8b8;
-    --color-text: #eafffa;
-    --color-text-hover: #89c8b8;
+.dark { /*May be able to say :root.dark*/
+  --color-background: #171717;
+  --color-header: #4d4632;
+  --color-card: #28413b;
+  --color-card-2: #321e29;
+  --color-card-3: #7ca8ff;
+  --color-heading: #89c8b8;
+  --color-text: #eafffa;
+  --color-text-hover: #89c8b8;
 
-    --color-table-cell: #36333a;
-    --color-table-contrast: #2b2832;
-    --color-table-hover: #1a1a1c;
+  --color-table-cell: #36333a;
+  --color-table-contrast: #2b2832;
+  --color-table-hover: #1a1a1c;
 
-    --nav-bar-height: 50px;
-  }
+  --nav-bar-height: 50px;
 }
 
 body {

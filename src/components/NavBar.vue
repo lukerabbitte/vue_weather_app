@@ -1,14 +1,18 @@
 <script setup>
-    import { ref } from 'vue';
     import { useLangStore } from '@/stores/lang'
-    const lang = useLangStore()
-    const darkMode = ref(false);
-
+    const lang = useLangStore();
+    
+    import { useDark, useToggle } from "@vueuse/core";
+    const isDark = useDark(); 
+    const toggleDark = useToggle(isDark);
 </script>
 
 <template>
     <nav class="navbar">
         <h1>Weather App 🌈 ☂ ☔ ⚡ ❄ </h1>
+
+        <input type="checkbox" @change="toggleDark()" />
+
         <div class="i18n-button">
             <span role="img" aria-label="Earth Emoji" style="font-size: 25px;">🌍</span>
             <button class="toggle-button" @click="lang.toggle">{{ lang.current }}</button>
@@ -50,4 +54,8 @@
         outline: none;
         color: #f0f0f0;
     }
+
+    
+
+
 </style>
