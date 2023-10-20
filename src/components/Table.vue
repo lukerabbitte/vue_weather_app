@@ -41,7 +41,7 @@
             const data = await response.json();
 
             if (response.ok) {
-                generateLiElements(data);
+                generateDataTable(data);
             } else {
                 console.error('Error: Weather data is not in the expected format.');
             }
@@ -67,73 +67,138 @@
         }
     };
 
-    // Helper function to generate weather list in DOM
-    function generateLiElements(jsonData) {
-        const dataList = document.getElementById('dataList');
-        dataList.innerHTML = '';
+    // Main function for generating Table
+    function generateDataTable(jsonData) {
+        const table = document.getElementById('dataTable');
+        table.innerHTML = '';
+
+        // Create the table header
+        createTableHeader(table);
+
+        const tbody = document.createElement('tbody');
 
         // Generate 'date reports' which aggregate data per day rather than per 3hrs in the API
         const dateReports = new Map();
 
-        // Go through each 'item' object in the '.list' array in the json response
+        // Go through each 'item' object in the '.list' array in the JSON response
         jsonData.list.forEach(item => {
             const date = item.dt_txt.split(' ')[0];
 
-            // Add unique dates to dateReports map
             if (!dateReports.has(date)) {
-                dateReports.set(date, {
-                    minTemp: item.main.temp,
-                    maxTemp: item.main.temp,
-                    minWindSpeed: item.wind.speed,
-                    maxWindSpeed: item.wind.speed,
-                    totalDailyRainfall: item.rain ? item.rain['3h'] : 0,
-                    dailyTempTotal: item.main.temp,
-                    timestampCount: 1,
-                });
-            }
-            // Update if new min or max values found for given date, sum up each 3h rainfall and 3h temperature stamp per day to calculate averages
-            else {
-                const report = dateReports.get(date);
-                report.minTemp = Math.min(report.minTemp, item.main.temp);
-                report.maxTemp = Math.max(report.maxTemp, item.main.temp);
-                report.minWindSpeed = Math.min(report.minWindSpeed, item.wind.speed);
-                report.maxWindSpeed = Math.max(report.maxWindSpeed, item.wind.speed);
-                report.totalDailyRainfall += item.rain ? item.rain['3h'] : 0;
-                report.dailyTempTotal += item.main.temp;
-                report.timestampCount++; 
+            dateReports.set(date, {
+                minTemp: item.main.temp,
+                maxTemp: item.main.temp,
+                minWindSpeed: item.wind.speed,
+                maxWindSpeed: item.wind.speed,
+                totalDailyRainfall: item.rain ? item.rain['3h'] : 0,
+                dailyTempTotal: item.main.temp,
+                timestampCount: 1,
+            });
+            } else {
+            const report = dateReports.get(date);
+            report.minTemp = Math.min(report.minTemp, item.main.temp);
+            report.maxTemp = Math.max(report.maxTemp, item.main.temp);
+            report.minWindSpeed = Math.min(report.minWindSpeed, item.wind.speed);
+            report.maxWindSpeed = Math.max(report.maxWindSpeed, item.wind.speed);
+            report.totalDailyRainfall += item.rain ? item.rain['3h'] : 0;
+            report.dailyTempTotal += item.main.temp;
+            report.timestampCount++;
             }
         });
 
-        let tempTotal = 0;
+        populateTableWithDateReports(dateReports, tbody);
 
-        // Interact with DOM to add each daily report as a list item
-        dateReports.forEach((report, date) => {
-            const li = document.createElement('li');
-            const totalDailyRainfallFormatted = report.totalDailyRainfall.toFixed(2);
-
-            li.textContent = `${date}: Temperature (min-max): ${report.minTemp}°C - ${report.maxTemp}°C, Wind Speed (min-max): ${report.minWindSpeed}m/s - ${report.maxWindSpeed}m/s, Total Rainfall: ${totalDailyRainfallFormatted}mm`;
-            dataList.appendChild(li);
-
-            if (report.totalDailyRainfall > 2.5) {
-                rainMessage.value = "High rainfall detected. Consider bringing an umbrella!";
-            }
-
-            report.dailyAverageTemp = report.dailyTempTotal / report.timestampCount;
-            tempTotal += report.dailyAverageTemp;
-        });
+        table.appendChild(tbody);
 
         // Calculate the overall average temperature
         const numberOfDays = dateReports.size;
+        const tempTotal = calculateAverageTemperature(dateReports);
         const averageTemp = (tempTotal / numberOfDays).toFixed(2);
 
-        // Set the temperature message based on the average temperature
         if (averageTemp < 13) {
-            temperatureMessage.value =  `Average temperature ${averageTemp}°C. Pack for cold weather!`;
+            temperatureMessage.value =  `🌡️ Average temperature ${averageTemp}°C. Pack for cold weather!`;
         } else if (averageTemp >= 13 && averageTemp <= 23) {
-            temperatureMessage.value = `Average temperature ${averageTemp}°C. Pack for mild weather!`;
+            temperatureMessage.value = `🌡️ Average temperature ${averageTemp}°C. Pack for mild weather!`;
         } else {
-            temperatureMessage.value = `Average temperature ${averageTemp}°C. Pack for hot weather!`;
+            temperatureMessage.value = `🌡️ Average temperature ${averageTemp}°C. Pack for hot weather!`;
         }
+
+        // Check for high rainfall and set the rain message
+        checkHighRainfall(dateReports);
+    }
+
+    // Helper function to create table header
+    function createTableHeader(table) {
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        headerRow.innerHTML = `
+            <th>Date</th>
+            <th>Min Temp (°C)</th>
+            <th>Max Temp (°C)</th>
+            <th>Min Wind Speed (m/s)</th>
+            <th>Max Wind Speed (m/s)</th>
+            <th>Total Rainfall (mm)`;
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+    }
+
+    // Helper function to append table row
+    function populateTableWithDateReports(dateReports, tbody) {
+        dateReports.forEach((report, date) => {
+            const row = createTableRow(date, report);
+            tbody.appendChild(row);
+        });
+    }
+
+    // Helper function to create table row
+    function createTableRow(date, report) {
+        const row = document.createElement('tr');
+
+        // Create table cells for each daily data report
+        const dateCell = createTableCell(date);
+        row.appendChild(dateCell);
+
+        const minTempCell = createTableCell(report.minTemp.toFixed(2));
+        row.appendChild(minTempCell);
+
+        const maxTempCell = createTableCell(report.maxTemp.toFixed(2));
+        row.appendChild(maxTempCell);
+
+        const minWindSpeedCell = createTableCell(report.minWindSpeed.toFixed(2));
+        row.appendChild(minWindSpeedCell);
+
+        const maxWindSpeedCell = createTableCell(report.maxWindSpeed.toFixed(2));
+        row.appendChild(maxWindSpeedCell);
+
+        const totalRainfallCell = createTableCell(report.totalDailyRainfall.toFixed(2));
+        row.appendChild(totalRainfallCell);
+
+        return row;
+    }
+
+    // Helper function to create table cell
+    function createTableCell(text) {
+        const cell = document.createElement('td');
+        cell.textContent = text;
+        return cell;
+    }
+
+    function calculateAverageTemperature(dateReports) {
+        let tempTotal = 0;
+
+        dateReports.forEach(report => {
+            tempTotal += report.dailyTempTotal / report.timestampCount;
+        });
+
+        return tempTotal;
+    }
+
+    function checkHighRainfall(dateReports) {
+        dateReports.forEach(report => {
+            if (report.totalDailyRainfall > 2.5) {
+                rainMessage.value = "🌧️ High rainfall detected. Consider bringing an umbrella!";
+            }
+        });
     }
 
     // Helper function to generate and display pollution info
@@ -161,12 +226,12 @@
         if (datesAbove10Map.size > 0) {
             datesAbove10Map.forEach((pm2_5, date) => {
                 const li = document.createElement('li');
-                li.textContent = `The highest pm2_5 on ${date} is ${pm2_5}`;
+                li.textContent = `On ${date} the pm2_5 level is ${pm2_5}`;
                 dateList.appendChild(li);
             });
-            maskMessage.value = 'High pm2_5 levels in the atmosphere. Consider bringing a mask!';
+            maskMessage.value = '😷 High pm2_5 levels in the atmosphere. Consider bringing a mask!';
         } else {
-            maskMessage.value = 'Low pm2_5 levels in the atmosphere. No need to bring a mask.';
+            maskMessage.value = '🙂 Low pm2_5 levels in the atmosphere. No need to bring a mask.';
         }
     }
 
@@ -201,18 +266,23 @@
     <div>
         <div class="weather-breakdown">
             <h2 v-if="city.name">5-day weather for {{ city.name }}:</h2>
-            <ul id="dataList">
-                <!-- Display fetched weather data -->
-            </ul>
+            <table id="dataTable">
+                <thead>
+                    <!-- Table header will be generated dynamically by JavaScript -->
+                </thead>
+                <tbody>
+                    <!-- Table rows will be generated dynamically by JavaScript -->
+                </tbody>
+            </table>
         </div>
         <div class="weather-alerts">
             <p> {{ rainMessage }}</p>
             <p> {{ temperatureMessage }}</p>
             <h1 v-if="lat && lon">Pollution information for lat {{ lat }} and longitude {{ lon }}</h1>
+            <p> {{ maskMessage }}</p>
             <ul id="pollutionDateList">
                 <!-- Display fetched pollution data -->
             </ul>
-            <p> {{ maskMessage }}</p>
         </div>
         <div class="unsplash-image">
             <UnsplashImage />
