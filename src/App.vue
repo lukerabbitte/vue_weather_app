@@ -48,5 +48,6 @@
     background-color: var(--color-card-2);
     border-radius: 8px;
     padding: 16px;
+    margin-bottom: 20px;
   }
 </style>

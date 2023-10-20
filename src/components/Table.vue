@@ -3,6 +3,7 @@
     import { ref, watch } from 'vue';
     import { useCityStore } from '@/stores/city'
     import { useLangStore } from '@/stores/lang'
+    import UnsplashImage from './UnsplashImage.vue';
 
     const city = useCityStore();
     const lang = useLangStore();
@@ -71,44 +72,71 @@
         const dataList = document.getElementById('dataList');
         dataList.innerHTML = '';
 
+        // Generate 'date reports' which aggregate data per day rather than per 3hrs in the API
         const dateReports = new Map();
 
+        // Go through each 'item' object in the '.list' array in the json response
         jsonData.list.forEach(item => {
             const date = item.dt_txt.split(' ')[0];
 
+            // Add unique dates to dateReports map
             if (!dateReports.has(date)) {
                 dateReports.set(date, {
                     minTemp: item.main.temp,
                     maxTemp: item.main.temp,
                     minWindSpeed: item.wind.speed,
                     maxWindSpeed: item.wind.speed,
-                    totalRainfall: item.rain ? item.rain['3h'] : 0,
+                    totalDailyRainfall: item.rain ? item.rain['3h'] : 0,
+                    dailyTempTotal: item.main.temp,
+                    timestampCount: 1,
                 });
-            } else {
+            }
+            // Update if new min or max values found for given date, sum up each 3h rainfall and 3h temperature stamp per day to calculate averages
+            else {
                 const report = dateReports.get(date);
                 report.minTemp = Math.min(report.minTemp, item.main.temp);
                 report.maxTemp = Math.max(report.maxTemp, item.main.temp);
                 report.minWindSpeed = Math.min(report.minWindSpeed, item.wind.speed);
                 report.maxWindSpeed = Math.max(report.maxWindSpeed, item.wind.speed);
-                report.totalRainfall += item.rain ? item.rain['3h'] : 0;
+                report.totalDailyRainfall += item.rain ? item.rain['3h'] : 0;
+                report.dailyTempTotal += item.main.temp;
+                report.timestampCount++; 
             }
         });
 
+        let tempTotal = 0;
+
+        // Interact with DOM to add each daily report as a list item
         dateReports.forEach((report, date) => {
             const li = document.createElement('li');
-            const totalRainfallFormatted = report.totalRainfall.toFixed(2); // round rainfall report to 2 decimal places
+            const totalDailyRainfallFormatted = report.totalDailyRainfall.toFixed(2);
 
-            li.textContent = `${date}: Temperature (min-max): ${report.minTemp}°C - ${report.maxTemp}°C, Wind Speed (min-max): ${report.minWindSpeed}m/s - ${report.maxWindSpeed}m/s, Total Rainfall: ${totalRainfallFormatted}mm`;
+            li.textContent = `${date}: Temperature (min-max): ${report.minTemp}°C - ${report.maxTemp}°C, Wind Speed (min-max): ${report.minWindSpeed}m/s - ${report.maxWindSpeed}m/s, Total Rainfall: ${totalDailyRainfallFormatted}mm`;
             dataList.appendChild(li);
 
-            // Check if any of the days exceeded 2.5mm rainfall, which we take to constitute a rainy day.
-            if (report.totalRainfall > 2.5) {
+            if (report.totalDailyRainfall > 2.5) {
                 rainMessage.value = "High rainfall detected. Consider bringing an umbrella!";
             }
+
+            report.dailyAverageTemp = report.dailyTempTotal / report.timestampCount;
+            tempTotal += report.dailyAverageTemp;
         });
+
+        // Calculate the overall average temperature
+        const numberOfDays = dateReports.size;
+        const averageTemp = (tempTotal / numberOfDays).toFixed(2);
+
+        // Set the temperature message based on the average temperature
+        if (averageTemp < 13) {
+            temperatureMessage.value =  `Average temperature ${averageTemp}°C. Pack for cold weather!`;
+        } else if (averageTemp >= 13 && averageTemp <= 23) {
+            temperatureMessage.value = `Average temperature ${averageTemp}°C. Pack for mild weather!`;
+        } else {
+            temperatureMessage.value = `Average temperature ${averageTemp}°C. Pack for hot weather!`;
+        }
     }
 
-    // Helper function to generate pollution info in DOM
+    // Helper function to generate and display pollution info
     function generatePollutionInfo(jsonData) {
         const dateList = document.getElementById('pollutionDateList');
         dateList.innerHTML = '';
@@ -129,6 +157,7 @@
                 }
             });
 
+        // Interact with DOM to add each pollution report as a list item.
         if (datesAbove10Map.size > 0) {
             datesAbove10Map.forEach((pm2_5, date) => {
                 const li = document.createElement('li');
@@ -170,20 +199,23 @@
 
 <template>
     <div>
-        <div>
+        <div class="weather-breakdown">
             <h2 v-if="city.name">5-day weather for {{ city.name }}:</h2>
-
             <ul id="dataList">
                 <!-- Display fetched weather data -->
             </ul>
-            <p> {{ rainMessage }}</p>
         </div>
-        <div>
+        <div class="weather-alerts">
+            <p> {{ rainMessage }}</p>
+            <p> {{ temperatureMessage }}</p>
             <h1 v-if="lat && lon">Pollution information for lat {{ lat }} and longitude {{ lon }}</h1>
             <ul id="pollutionDateList">
                 <!-- Display fetched pollution data -->
             </ul>
             <p> {{ maskMessage }}</p>
+        </div>
+        <div class="unsplash-image">
+            <UnsplashImage />
         </div>
     </div>
 </template>
