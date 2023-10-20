@@ -3,7 +3,7 @@
   --color-header: #cfbc85;
   --color-card: #89c8b8;
   --color-card-2: #e4a5c6;
-  --color-card-3: #e4d5a5;
+  --color-card-3: #d7f0d7;
   --color-heading: #28413b;
   --color-text: #00100b;
   --color-text-hover: #28413b;
@@ -38,7 +38,7 @@ body {
   color: var(--color-text);
   background: var(--color-background);
   line-height: 1.6;
-  margin: var(--nav-bar-height) auto;
+  margin: var(--nav-bar-height) auto auto auto;
   font-weight: normal;
   font-family:
     Inter,

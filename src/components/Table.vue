@@ -14,6 +14,7 @@
     const rainMessage = ref('');
     const temperatureMessage = ref('');
     const maskMessage = ref('');
+    const renderPollutionBreakdown = ref(false);
 
     // Geocoding call
     const fetchGeocodingData = async () => {
@@ -57,7 +58,6 @@
             const data = await response.json();
 
             if (response.ok) {
-                maskMessage.value = 'the call was all good.'
                 generatePollutionInfo(data);
             } else {
                 console.error('Error: Pollution data is not in the expected format.');
@@ -270,6 +270,7 @@
     function checkHighPM2_5(datesAbove10Map) {
         if (datesAbove10Map.size > 0) {
             maskMessage.value = '😷 High pm2.5 levels in the atmosphere. Consider bringing a mask!';
+            renderPollutionBreakdown = true;
         } else {
             maskMessage.value = '🙂 Low pm2.5 levels in the atmosphere. No need to bring a mask.';
         }
@@ -306,7 +307,7 @@
 <template>
     <div>
         <div class="table" id="weather-table">
-            <h2 v-if="city.name">5-day weather for {{ city.name }}:</h2>
+            <h2 v-if="city.name" class="tableLabel">5-day weather for {{ city.name }}:</h2>
             <table id="dataTable">
                 <thead>
                     <!-- Table header will go here -->
@@ -325,7 +326,7 @@
         </div>
         
         <div class="table" id="pollution-table">
-            <h4 v-if="city.name">PM2.5 breakdown for {{ city.name }}:</h4>
+            <h4 v-if="city.name" class="tableLabel">PM2.5 breakdown for {{ city.name }}:</h4>
             <table id="pollutionDataTable">
                 <thead>
                     <!-- Table header will go here -->
@@ -346,6 +347,10 @@
     .table {
     width: 80%;
     border-collapse: collapse;
+    }
+
+    .tableLabel {
+    margin-bottom: 0;
     }
 
     .table th, .table td {

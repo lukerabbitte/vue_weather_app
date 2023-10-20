@@ -9,14 +9,21 @@
 
 <template>
     <nav class="navbar">
-        <h1>Weather App 🌈 ☂ ☔ ⚡ ❄ </h1>
+        <h1>Weather App</h1>
 
-        <input type="checkbox" @change="toggleDark()" />
+        <div class="buttons">
+            <div class="i18n-button">
+                <span role="img" aria-label="Earth Emoji" style="font-size: 25px;">🌍</span>
+                <button class="toggle-button" @click="lang.toggle">{{ lang.current === 'EN' ? 'English' : 'French' }}</button>
+            </div>
 
-        <div class="i18n-button">
-            <span role="img" aria-label="Earth Emoji" style="font-size: 25px;">🌍</span>
-            <button class="toggle-button" @click="lang.toggle">{{ lang.current }}</button>
+            <div class="dark-mode-button">
+                <span v-if="isDark" role="img" aria-label="Dark Emoji" style="font-size: 25px;">🌙</span>
+                <span v-else role="img" aria-label="Dark Emoji" style="font-size: 25px;">☀️</span>
+                <button class="toggle-button" @click="toggleDark()">{{ isDark ? 'Dark' : 'Light' }}</button>
+            </div>
         </div>
+
     </nav>
 </template>
 
@@ -36,10 +43,21 @@
         right: 0;
     }
 
+    .buttons {
+        margin-right: 25px;
+        display: flex;
+        justify-content: space-between;
+    }
+
     .i18n-button {
         display: flex;
         align-items: center;
-        margin-right: 25px;
+    }
+
+    .dark-mode-button {
+        display: flex;
+        align-items: center;
+        margin-left: 5px;
     }
 
     .toggle-button {
@@ -53,9 +71,7 @@
     .toggle-button:hover {
         outline: none;
         color: #f0f0f0;
-    }
-
-    
+    }  
 
 
 </style>
