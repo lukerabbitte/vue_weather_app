@@ -42,16 +42,16 @@
 </template>
 
 <style scoped>
-.unsplash-grid {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  background-color: var(--color-card-3);
-  border-radius: 8px;
-  padding: 10px;
-  justify-content: space-evenly;
-}
-.unsplash-photo {
-  width: 30%;
-}
+  .unsplash-grid {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background-color: var(--color-card-3);
+    border-radius: 8px;
+    padding: 10px;
+    justify-content: space-evenly;
+  }
+  .unsplash-photo {
+    width: 30%;
+  }
 </style>

@@ -1,7 +1,8 @@
 <script setup>
-
+    import { ref } from 'vue';
     import { useLangStore } from '@/stores/lang'
     const lang = useLangStore()
+    const darkMode = ref(false);
 
 </script>
 

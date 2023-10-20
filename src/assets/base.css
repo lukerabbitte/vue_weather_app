@@ -8,6 +8,10 @@
   --color-text: #00100b;
   --color-text-hover: #28413b;
 
+  --color-table-cell: #d6caec;
+  --color-table-contrast: #ad98d4;
+  --color-table-hover: #ede9f5;
+
   --nav-bar-height: 50px; /*Avoids hiding of body content under fixed navbar*/
 }
 
@@ -21,6 +25,10 @@
     --color-heading: #89c8b8;
     --color-text: #eafffa;
     --color-text-hover: #89c8b8;
+
+    --color-table-cell: #36333a;
+    --color-table-contrast: #2b2832;
+    --color-table-hover: #1a1a1c;
 
     --nav-bar-height: 50px;
   }

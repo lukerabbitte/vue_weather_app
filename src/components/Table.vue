@@ -201,10 +201,15 @@
         });
     }
 
-    // Helper function to generate and display pollution info
+    // Generate pollution table showing days where pm2_5 is too high
     function generatePollutionInfo(jsonData) {
-        const dateList = document.getElementById('pollutionDateList');
-        dateList.innerHTML = '';
+        const table = document.getElementById('pollutionDataTable');
+        table.innerHTML = '';
+
+        // Create the table header
+        createPollutionTableHeader(table);
+
+        const tbody = document.createElement('tbody');
 
         const datesAbove10Map = new Map();
 
@@ -215,25 +220,61 @@
                 const pm2_5 = item.components.pm2_5;
                 if (datesAbove10Map.has(date)) {
                     if (pm2_5 > datesAbove10Map.get(date)) {
-                        datesAbove10Map.set(date, pm2_5);
+                    datesAbove10Map.set(date, pm2_5);
                     }
                 } else {
                     datesAbove10Map.set(date, pm2_5);
                 }
             });
 
-        // Interact with DOM to add each pollution report as a list item.
+        populatePollutionTable(datesAbove10Map, tbody);
+
+        table.appendChild(tbody);
+
+        // Check for high pm2.5 levels and set the mask message
+        checkHighPM2_5(datesAbove10Map);
+    }
+
+    function createPollutionTableHeader(table) {
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        headerRow.innerHTML = `
+            <th>Date</th>
+            <th>PM2.5 Level</th>
+        `;
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+    }
+
+    function populatePollutionTable(datesAbove10Map, tbody) {
+        datesAbove10Map.forEach((pm2_5, date) => {
+            const row = createPollutionTableRow(date, pm2_5);
+            tbody.appendChild(row);
+        });
+    }
+
+    function createPollutionTableRow(date, pm2_5) {
+        const row = document.createElement('tr');
+
+        // Create table cells for date and PM2.5 Level
+        const dateCell = createTableCell(date);
+        row.appendChild(dateCell);
+
+        const pm2_5Cell = createTableCell(pm2_5);
+        row.appendChild(pm2_5Cell);
+
+        return row;
+    }
+    
+
+    function checkHighPM2_5(datesAbove10Map) {
         if (datesAbove10Map.size > 0) {
-            datesAbove10Map.forEach((pm2_5, date) => {
-                const li = document.createElement('li');
-                li.textContent = `On ${date} the pm2_5 level is ${pm2_5}`;
-                dateList.appendChild(li);
-            });
-            maskMessage.value = '😷 High pm2_5 levels in the atmosphere. Consider bringing a mask!';
+            maskMessage.value = '😷 High pm2.5 levels in the atmosphere. Consider bringing a mask!';
         } else {
-            maskMessage.value = '🙂 Low pm2_5 levels in the atmosphere. No need to bring a mask.';
+            maskMessage.value = '🙂 Low pm2.5 levels in the atmosphere. No need to bring a mask.';
         }
     }
+
 
     // Helper function to make legible date
     function formatDate(timestamp) {
@@ -264,28 +305,70 @@
 
 <template>
     <div>
-        <div class="weather-breakdown">
+        <div class="table" id="weather-table">
             <h2 v-if="city.name">5-day weather for {{ city.name }}:</h2>
             <table id="dataTable">
                 <thead>
-                    <!-- Table header will be generated dynamically by JavaScript -->
+                    <!-- Table header will go here -->
                 </thead>
                 <tbody>
-                    <!-- Table rows will be generated dynamically by JavaScript -->
+                    <!-- Table rows will go here -->
                 </tbody>
             </table>
         </div>
+
         <div class="weather-alerts">
             <p> {{ rainMessage }}</p>
             <p> {{ temperatureMessage }}</p>
             <h1 v-if="lat && lon">Pollution information for lat {{ lat }} and longitude {{ lon }}</h1>
             <p> {{ maskMessage }}</p>
-            <ul id="pollutionDateList">
-                <!-- Display fetched pollution data -->
-            </ul>
         </div>
+        
+        <div class="table" id="pollution-table">
+            <h4 v-if="city.name">PM2.5 breakdown for {{ city.name }}:</h4>
+            <table id="pollutionDataTable">
+                <thead>
+                    <!-- Table header will go here -->
+                </thead>
+                <tbody>
+                    <!-- Table rows will go here -->
+                </tbody>
+            </table>
+        </div>
+
         <div class="unsplash-image">
             <UnsplashImage />
         </div>
     </div>
 </template>
+
+<style>
+    .table {
+    width: 80%;
+    border-collapse: collapse;
+    }
+
+    .table th, .table td {
+    border: 1px solid #000;
+    border-radius: 8px;
+    padding: 8px;
+    text-align: left;
+    }
+
+    .table th {
+    font-weight: bold;
+    background-color: var(--color-header);
+    }
+
+    .table tbody tr:nth-child(even) {
+    background-color: var(--color-table-cell);
+    }
+
+    .table tbody tr:nth-child(odd) {
+    background-color: var(--color-table-contrast);
+    }
+
+    .table tbody tr:hover {
+    background-color: var(--color-table-hover);
+    }
+</style>
