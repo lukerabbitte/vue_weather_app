@@ -12,9 +12,17 @@
 
 <template>
   <div>
-    <h2>Discover upcoming weather events in any city 🌈 ☂ ☔ ⚡ ❄</h2>
-    <p>Hint: make a more specific search by putting the 2-letter country code after the city name! E.g. 'Dublin, IE'</p>
-  </div>
+    <h2>
+        <span v-if="lang.current === 'EN'">Discover upcoming weather events in any city</span>
+        <span v-else>Découvrez la météo à venir dans votre ville</span>
+        🌈 ☔ ⚡ ❄
+    </h2>
+    <p>
+        <span v-if="lang.current === 'EN'">Hint: make a more specific search by putting the 2-letter country code after the city name! E.g. 'Dublin, IE'</span>
+        <span v-else>Conseil : effectuez une recherche plus précise en ajoutant le code pays à deux lettres après le nom de la ville ! Par exemple, 'Paris, FR'</span>
+    </p>
+</div>
+
 
   <form @submit.prevent="city.changeCityName(cityName)" class="input-container">
     <input

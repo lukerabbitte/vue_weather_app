@@ -14,7 +14,7 @@
         <div class="buttons">
             <div class="i18n-button">
                 <span role="img" aria-label="Earth Emoji" style="font-size: 25px;">🌍</span>
-                <button class="toggle-button" @click="lang.toggle">{{ lang.current === 'EN' ? 'English' : 'French' }}</button>
+                <button class="toggle-button" @click="lang.toggle">{{ lang.current === 'EN' ? 'English' : 'Français' }}</button>
             </div>
 
             <div class="dark-mode-button">

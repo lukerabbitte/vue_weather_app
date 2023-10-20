@@ -14,7 +14,6 @@
     const rainMessage = ref('');
     const temperatureMessage = ref('');
     const maskMessage = ref('');
-    const renderPollutionBreakdown = ref(false);
 
     // Geocoding call
     const fetchGeocodingData = async () => {
@@ -116,11 +115,17 @@
         const averageTemp = (tempTotal / numberOfDays).toFixed(2);
 
         if (averageTemp < 13) {
-            temperatureMessage.value =  `🌡️ Average temperature ${averageTemp}°C. Pack for cold weather!`;
+            temperatureMessage.value = lang.current === 'FR'
+                ? `🌡️ Température moyenne de ${averageTemp}°C. Apporter des vêtements chauds !`
+                : `🌡️ Average temperature ${averageTemp}°C. Pack for cold weather!`;
         } else if (averageTemp >= 13 && averageTemp <= 23) {
-            temperatureMessage.value = `🌡️ Average temperature ${averageTemp}°C. Pack for mild weather!`;
+            temperatureMessage.value = lang.current === 'FR'
+                ? `🌡️ Température moyenne de ${averageTemp}°C. Apporter des vêtements pour le temps doux !`
+                : `🌡️ Average temperature ${averageTemp}°C. Pack for mild weather!`;
         } else {
-            temperatureMessage.value = `🌡️ Average temperature ${averageTemp}°C. Pack for hot weather!`;
+            temperatureMessage.value = lang.current === 'FR'
+                ? `🌡️ Température moyenne de ${averageTemp}°C. Apporter des vêtements légers !`
+                : `🌡️ Average temperature ${averageTemp}°C. Pack for hot weather!`;
         }
 
         // Check for high rainfall and set the rain message
@@ -194,11 +199,22 @@
     }
 
     function checkHighRainfall(dateReports) {
+        let highRainfallDetected = false;
         dateReports.forEach(report => {
             if (report.totalDailyRainfall > 2.5) {
-                rainMessage.value = "🌧️ High rainfall detected. Consider bringing an umbrella!";
+                highRainfallDetected = true;
             }
         });
+
+        if (highRainfallDetected) {
+            if (lang.current === 'FR') {
+                rainMessage.value = "🌧️ Risque de fortes pluies détecté. Pensez à prendre un parapluie !";
+            } else {
+                rainMessage.value = "🌧️ High rainfall detected. Consider bringing an umbrella!";
+            }
+        } else {
+            rainMessage.value = "";
+        }
     }
 
     // Generate pollution table showing days where pm2_5 is too high
@@ -268,13 +284,21 @@
     
 
     function checkHighPM2_5(datesAbove10Map) {
-        if (datesAbove10Map.size > 0) {
-            maskMessage.value = '😷 High pm2.5 levels in the atmosphere. Consider bringing a mask!';
-            renderPollutionBreakdown = true;
+    if (datesAbove10Map.size > 0) {
+        if (lang.current === 'FR') {
+            maskMessage.value = '😷 Niveaux élevés de PM2.5 dans l\'atmosphère. Pensez à prendre un masque !';
         } else {
-            maskMessage.value = '🙂 Low pm2.5 levels in the atmosphere. No need to bring a mask.';
+            maskMessage.value = '😷 High PM2.5 levels in the atmosphere. Consider bringing a mask!';
+        }
+    } else {
+        if (lang.current === 'FR') {
+            maskMessage.value = '🙂 Faibles niveaux de PM2.5 dans l\'atmosphère. Pas besoin de prendre un masque.';
+        } else {
+            maskMessage.value = '🙂 Low PM2.5 levels in the atmosphere. No need to bring a mask.';
         }
     }
+}
+
 
 
     // Helper function to make legible date
@@ -287,14 +311,15 @@
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const year = date.getFullYear();
 
-        return `${dayOfWeek} ${day}-${month}-${year}`;
+        return `${dayOfWeek} ${day}-${month}`;
     }
 
 
     // Watcher to ensure we fetch only when the city state changes
-    watch(() => city.name, () => {
+    watch([() => city.name, () => lang.current], () => {
         fetchGeocodingAndWeatherData();
     });
+
 
     // Ensure API calls resolve in sensible order
     const fetchGeocodingAndWeatherData = async () => {
@@ -307,7 +332,11 @@
 <template>
     <div>
         <div class="table" id="weather-table">
-            <h2 v-if="city.name" class="tableLabel">5-day weather for {{ city.name }}:</h2>
+            <h2 v-if="city.name" class="tableLabel">
+                <span v-if="lang.current === 'EN'">5-day weather for {{ city.name }}:</span>
+                <span v-else>Météo à 5 jours pour {{ city.name }} :</span>
+            </h2>
+
             <table id="dataTable">
                 <thead>
                     <!-- Table header will go here -->
@@ -323,12 +352,14 @@
                 <div class="weather-alerts">
                 <p> {{ rainMessage }}</p>
                 <p> {{ temperatureMessage }}</p>
-                <h1 v-if="lat && lon">Pollution information for lat {{ lat }} and longitude {{ lon }}</h1>
                 <p> {{ maskMessage }}</p>
                 </div>
             
                 <div class="table" id="pollution-table">
-                    <h4 v-if="city.name" class="tableLabel">PM2.5 breakdown for {{ city.name }}:</h4>
+                    <h4 v-if="city.name" class="tableLabel">
+                        <span v-if="lang.current === 'EN'">PM2.5 breakdown for {{ city.name }}:</span>
+                        <span v-else>Résumé de PM2.5 pour {{ city.name }} :</span>
+                    </h4>
                     <table id="pollutionDataTable">
                         <thead>
                             <!-- Table header will go here -->
@@ -384,5 +415,6 @@
     .alertsAndPicture {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 </style>
