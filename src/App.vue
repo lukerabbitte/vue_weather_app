@@ -26,8 +26,14 @@
         </div>
       </div>
     </main>
+
+    <footer>
+      ✧˖°⋆｡ﾟ☁︎｡⋆｡ ﾟ☾ ﾟ｡°˖✧
+    </footer>
   </div>
 </template>
+
+
 
 <style scoped>
 
@@ -49,5 +55,15 @@
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 20px;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--footer-color);
+    text-align: center;
+    padding: 10px 0;
+    color: white;
   }
 </style>

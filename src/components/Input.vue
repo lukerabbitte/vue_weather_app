@@ -12,7 +12,7 @@
 
 <template>
   <div>
-    <h2>Discover upcoming weather events in any city</h2>
+    <h2>Discover upcoming weather events in any city </h2>
     <p>Hint: make a more specific search by putting the 2-letter country code after the city name! E.g. 'Dublin, IE'</p>
   </div>
 

@@ -7,7 +7,7 @@
 
 <template>
     <nav class="navbar">
-        <h1>Weather App</h1>
+        <h1>Weather App 🌈 ☂ ☔ ⚡ ❄ </h1>
         <div class="i18n-button">
             <span role="img" aria-label="Earth Emoji" style="font-size: 25px;">🌍</span>
             <button class="toggle-button" @click="lang.toggle">{{ lang.current }}</button>
