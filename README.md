@@ -42,5 +42,5 @@ Vue 3.0, Composition API, and modern libraries were used throughout.
 
 - Dark Mode: Implements persistent dark mode support that first reads from system preferences, then saves session state locally.
 
-- Extensibility: Weather App can be extended, with the potential for future enhancements such as integrating Wikipedia pages for cities or providing maps based on geocoding coordinates.
+- Extensibility: Weather App can be extended, with the potential for future enhancements such as integrating Wikipedia or OpenStreetMap APIs or adding richer graphs.
 
