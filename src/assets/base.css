@@ -15,7 +15,7 @@
   --nav-bar-height: 50px; /*Avoids hiding of body content under fixed navbar*/
 }
 
-.dark { /*May be able to say :root.dark*/
+.dark {
   --color-background: #171717;
   --color-header: #4d4632;
   --color-card: #28413b;

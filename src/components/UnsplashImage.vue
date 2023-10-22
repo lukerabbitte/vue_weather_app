@@ -8,6 +8,7 @@
   const unsplashPhotos = ref([]);
   const mostLikedPhoto = ref(null);
 
+  // Make a call to the unsplash_photos endpoint on back-end
   const fetchUnsplashPhotos = async () => {
     try {
       const response = await fetch(`http://localhost:8080/unsplash_photos?city=${city.name}`);
