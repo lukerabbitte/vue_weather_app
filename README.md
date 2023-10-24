@@ -44,3 +44,8 @@ Vue 3.0, Composition API, and modern libraries were used throughout.
 
 - Extensibility: Weather App can be extended, with the potential for future enhancements such as integrating Wikipedia or OpenStreetMap APIs or adding richer graphs.
 
+
+https://github.com/lukerabbitte/vue_weather_app/assets/72459539/25fea725-0e05-41fb-8e7a-e16b1b82eb57
+
+
+
